@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chat</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+	<div class="wrapper">
+		<h1 class="title">Chat</h1>
+		<div class="chat">
+		</div>
+		<form action="" class="form">
+			<div class="form__row">
+				<label for="name" class="form__label">Name</label>
+				<input type="text" class="form__name" id="name">
+			</div>
+			<!-- /^\d{1,}$/ -->
+			<div class="form__row">
+				<label for="comment" class="form__label">Comment</label>
+				<textarea name="comment" id="comment" cols="30" rows="5" class="form__comment" pattern="^[0-9]+$"></textarea>
+			</div>
+			<div class="form__btn-wrapper">
+				<button class="form__button button--clear" type="button">Очистить</button>
+				<button class="form__button button--send" type="button">Отправить</button>
+			</div>
+		</form>
+	</div>
+
+
+	<script src="./js/main.js"></script>
+</body>
+
+</html>

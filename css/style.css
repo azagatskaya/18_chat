@@ -1,0 +1,100 @@
+*{box-sizing: border-box;}
+body{
+	font-family: 'Open Sans', sans-serif;
+	padding: 4vh 0;
+	background-color: rgba(78, 192, 118, 0.2);
+}
+.title{
+	margin: 10px 0;
+}
+.wrapper, .form{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.wrapper{
+	justify-content: space-between;
+	max-width: 500px;
+	height: 90vh;
+	margin: auto;
+	padding: 40px;
+	box-shadow: 2px 2px 10px grey;
+	background-color: rgb(249, 249, 249);
+}
+.chat{
+	border: 1px solid black;
+	height: 50%;
+	width: 100%;
+	text-align: start;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.chat__msg{
+	height: 20px;
+	margin-bottom: 2px;
+}
+
+.form__btn-wrapper{
+	margin: 18px 0px 0px 0px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-self: flex-end;
+	height: 30px;
+	width: 290px;
+}
+.form{
+	width: 100%;
+	justify-content: flex-start;
+}
+.form__row{
+	margin: 8px 0px 0px 0px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;	
+}
+.form__label{
+	width: 100px;
+	font-weight: bold;
+	color:darkorchid;
+}
+.form__comment, 
+.form__name{
+	font-family: inherit;
+	font-size: inherit;
+	width: 100%;
+	padding: 0 7px;
+	border: 1px solid rgb(200, 200, 200);
+}
+.form__button{
+	width: 130px;
+	height: 30px;
+	border: none;
+	color: #fff;
+	background-color: darkorchid;
+	font-family: inherit;
+	letter-spacing: 1px;
+	font-weight: 600;
+}
+.author{
+	font-weight: bold;
+	color: rgb(78, 192, 118);
+}
+.form__name:invalid{
+	background-color: red;
+}
+/* .author--1{
+}
+.author--2{
+	color: rgb(192, 167, 78);
+}
+.author--3{
+	color: rgb(192, 78, 181);
+}
+.author--4{
+	color: rgb(78, 181, 192);
+} */
