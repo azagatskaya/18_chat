@@ -9,13 +9,27 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./css/nullstyle.css">
 	<link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
 	<div class="wrapper">
-		<h1 class="title">Chat</h1>
+		<header class="header">
+			<h1 class="title">Chat</h1>
+			<div class="user-info__wrapper">
+				<span class="author">Author</span>
+				<a class="icon-wrapper" href="#"><img class="user-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user"></a>
+			</div>
+		</header>
 		<div class="chat">
+			<div class="chat__msg">
+				<div class="icon-wrapper">
+					<img class="user-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user">
+				</div>
+				<!-- <div class="user-icon"></div> -->
+				<span class="author">Author: </span><span class="comment">Comment</span>
+			</div>
 		</div>
 		<form action="" class="form">
 			<div class="form__row">

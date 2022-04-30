@@ -1,12 +1,16 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', function (event) {
-	let name = getNameFromLocalStorage();
+// document.addEventListener('DOMContentLoaded', function () {
+getNameFromLS();
+
+function getNameFromLS() {
+	let name = localStorage.getItem('name');
 	if (name) {
 		document.querySelector('.form__name').value = name;
 	}
-});
+}
 
+document.querySelector('.header .user-icon').addEventListener('click', selectIcon);
 document.querySelector('.button--send').addEventListener('click', checkMessage);
 document.querySelector('.button--clear').addEventListener('click', clearChat);
 document.querySelector('.form__comment').addEventListener('keydown', function (e) {
@@ -17,27 +21,18 @@ document.querySelector('.form__comment').addEventListener('keydown', function (e
 });
 
 function checkMessage() {
-	let author = document.querySelector('.form__name').value;
 	if (!isCommentEmpty()) {
-		if (!getNameFromLocalStorage()) {
-			localStorage.setItem('name', author);
-		}
-		if (getNameFromLocalStorage() !== author) {
-			localStorage.setItem('name', author);
-		}
-		sendMessage();
+		checkNameInLocalStorage();
+		sendMessage(checkSpam());
 		clearComment();
 	}
 }
 
 function checkSpam() {
-	const spamExamples = [/viagra/ig, /xxx/ig];
-	let filteredMsg = '';
-	let resultText = getUserMsg();
-	for (let spamWord of spamExamples) {
-		filteredMsg = resultText.replace(spamWord, '***');
-		resultText = filteredMsg;
-	}
+	const spamRgEx = /viagra|xxx|ххх/ig;
+	let resultText = document.querySelector('.form__comment').value;
+	let filteredMsg = resultText.replace(spamRgEx, '***');
+	resultText = filteredMsg;
 	return filteredMsg;
 }
 
@@ -45,14 +40,27 @@ function isCommentEmpty() {
 	return document.querySelector('.form__comment').value.trim() === '';
 }
 
-function sendMessage() {
+function sendMessage(message) {
 	let author = document.querySelector('.form__name').value;
-	let comment = document.querySelector('.form__comment').value;
-	document.querySelector('.chat').innerHTML += `<div class="chat__msg"><span class="author">${author}: </span><span class="comment">${comment}</span></div>`;
+	let userIcon = getUserIconFromLS(author);
+	document.querySelector('.chat').innerHTML += `<div class="chat__msg">
+	<div class="icon-wrapper">
+	<img class="user-icon" src="${userIcon}"></div>
+	<span class="author">${author}: </span>
+	<span class="comment">${message}</span></div>`;
 }
 
-function getNameFromLocalStorage() {
-	return localStorage.getItem('name');
+function getUserIconFromLS(author) {
+	let userIcon = localStorage.getItem(`icon${author}`);
+	return userIcon ? userIcon : 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+}
+
+function checkNameInLocalStorage() {
+	let author = document.querySelector('.form__name').value;
+	let lsName = localStorage.getItem('name');
+	if ((!lsName) || (lsName !== author)) {
+		localStorage.setItem('name', author);
+	}
 }
 
 function clearChat() {
@@ -64,21 +72,4 @@ function clearComment() {
 	document.querySelector('.form__comment').value = '';
 }
 
-
-
-// объект
-const obj = {
-	prop1: 'value1',
-	prop2: 'value2',
-	prop3: 'value3'
-}
-
-//сохраним объект в LocalStorage предварительно преобразовав его в строку JSON
-localStorage['mykey'] = JSON.stringify(obj);
-// если ключ «mykey» имеется в localStorage, то...
-if (localStorage['mykey']) {
-	// получим из LocalStorage значение ключа «mykey» и преобразуем его с помощью метода JSON.parse() в объект
-	const newObj = JSON.parse(localStorage['mykey']);
-	console.log(newObj);
-
-}
+// });
