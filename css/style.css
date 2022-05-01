@@ -33,23 +33,34 @@ body{
 	justify-content: flex-end;
 }
 .chat__msg{
+	margin-top: 5px;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	align-items: center;
-	height: 34px;
+	align-items: flex-start;
 }
-
+.chat__msg .author{
+}
+.text-wrapper{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 5px;
+	width: 90%;
+}
 .author{
 	display: block;
 	font-size: inherit;
 	font-weight: bold;
 	color: rgb(78, 192, 118);
-	margin-right: 5px;
 }
 .comment{
+	padding-top: 3px;
 	display: block;
 	font-size: inherit;
+	line-height: 1.2;
+	width: 100%;
 }
 .form__btn-wrapper{
 	margin: 15px 0px 0px 0px;
@@ -119,6 +130,7 @@ body{
 }
 .user-info__wrapper .author{
 	font-size: 16px;
+	margin: 0 5px;
 }
 .user-info__wrapper .author:hover{
 	cursor: text;

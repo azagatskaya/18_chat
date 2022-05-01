@@ -132,8 +132,10 @@ function sendMessage(message) {
 		<div class="icon-wrapper">
 			<img class="user-icon" src="${userIcon}">
 		</div>
-		<span class="author">${author}: </span>
-		<span class="comment">${message}</span>
+		<div class="text-wrapper" >
+			<span class="author">${author}: </span>
+			<span class="comment">${message}</span>
+		</div>
 	</div>`;
 }
 
