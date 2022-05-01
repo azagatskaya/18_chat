@@ -18,13 +18,14 @@
 		<header class="header">
 			<h1 class="title">Chat</h1>
 			<div class="user-info__wrapper">
-				<input class="author" type="text" placeholder="Your name"></input>
-				<span class="author">Your name</span>
+				<input class="author input--author" type="text" placeholder="Ваше имя"></input>
+				<span class="author">Ваше имя</span>
 				<div class="icon-wrapper">
 					<img class="user-icon icon--active" src="https://cdn0.iconfinder.com/data/icons/eon-social-media-contact-info-2/32/user_people_person_users_man-512.png" alt="user">
 				</div>
 				<div class="user-info__select-icon">
 					<p class="select-icon__title">Выберите аватар:</p>
+					<img class="close-select-icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828778.png">
 					<div class="icon-wrapper">
 						<img class="user-icon icon--bicycle" src="https://cdn-icons-png.flaticon.com/512/983/983534.png" alt="user">
 					</div>
@@ -53,17 +54,22 @@
 						<img class="user-icon icon--add" src="https://cdn3.iconfinder.com/data/icons/user-interface-169/32/plus-512.png" alt="user">
 					</div>
 				</div>
+				<div class="add-icon-link__wrapper">
+					<input class="input--add-icon-link" type="text" placeholder="Введите ссылку на аватар"></input>
+					<button class="btn--add-icon-link form__button">Сохранить</button>
+				</div>
+
 			</div>
 		</header>
 		<div class="chat">
 		</div>
 		<form action="" class="form">
 			<div class="form__row">
-				<label for="name" class="form__label">Name</label>
+				<label for="name" class="form__label">Имя</label>
 				<input type="text" class="form__name" id="name">
 			</div>
 			<div class="form__row">
-				<label for="comment" class="form__label">Comment</label>
+				<label for="comment" class="form__label">Комментарий</label>
 				<textarea name="comment" id="comment" cols="30" rows="5" class="form__comment" pattern="^[0-9]+$"></textarea>
 			</div>
 			<div class="form__btn-wrapper">

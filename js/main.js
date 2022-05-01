@@ -1,6 +1,5 @@
 'use strict';
 
-// document.addEventListener('DOMContentLoaded', function () {
 getNameFromLS();
 
 function getNameFromLS() {
@@ -18,12 +17,18 @@ document.querySelector('.user-info__wrapper span.author').addEventListener('clic
 inputFocusOutListener();
 
 function inputFocusOutListener() {
-	document.querySelector('.user-info__wrapper input').addEventListener('focusout', handleActiveNameInput)
+	document.querySelector('.user-info__wrapper .input--author').addEventListener('focusout', handleActiveNameInput)
 };
-document.querySelector('.user-info__wrapper input').addEventListener('keydown', handleActiveNameEnter);
+document.querySelector('.user-info__wrapper .input--author').addEventListener('keydown', handleActiveNameEnter);
 document.querySelector('.icon--active').addEventListener('click', handleActiveIconClick);
 document.querySelector('.button--send').addEventListener('click', checkMessage);
 document.querySelector('.button--clear').addEventListener('click', clearChat);
+document.querySelector('.form__name').addEventListener('keydown', function (e) {
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		checkActiveUser();
+	}
+});
 document.querySelector('.form__comment').addEventListener('keydown', function (e) {
 	if (e.keyCode === 13) {
 		e.preventDefault();
@@ -31,7 +36,7 @@ document.querySelector('.form__comment').addEventListener('keydown', function (e
 	}
 });
 
-document.querySelector('.icon--add').addEventListener('click', addIconLink);
+document.querySelector('.icon--add').addEventListener('click', handleAddIconLink);
 const icons = document.querySelectorAll('.user-info__select-icon .icon-wrapper:not(:last-child)');
 for (let icon of icons) {
 	icon.addEventListener('click', handleIconClick);
@@ -47,11 +52,19 @@ function handleIconClick(e) {
 }
 
 function handleActiveIconClick() {
+	if (changeDisplay('.user-info__select-icon') === 'flex') {
+		document.querySelector('.close-select-icon').addEventListener('click', handleCloseSelectionClick);
+	} else {
+		document.querySelector('.close-select-icon').removeEventListener('click', handleCloseSelectionClick);
+	}
+}
+
+function handleCloseSelectionClick() {
 	changeDisplay('.user-info__select-icon');
 }
 
 function handleActiveNameClick() {
-	changeDisplay('.user-info__wrapper input');
+	changeDisplay('.user-info__wrapper .input--author');
 }
 
 function handleActiveNameEnter(e) {
@@ -67,9 +80,23 @@ function handleActiveNameInput(e) {
 	setActiveIcon(getUserIconFromLS(e.target.value));
 	document.querySelector('.form__name').value = e.target.value;
 	document.querySelector('.user-info__wrapper span.author').innerText = e.target.value;
-	changeDisplay('.user-info__wrapper input');
+	changeDisplay('.user-info__wrapper .input--author');
 }
 
+function handleAddIconLink() {
+	changeDisplay('.user-info__select-icon')
+	changeDisplay('.add-icon-link__wrapper');
+	document.querySelector('.btn--add-icon-link').addEventListener('click', handleSaveLinkClick);
+}
+
+function handleSaveLinkClick() {
+	const link = document.querySelector('.input--add-icon-link').value;
+	setActiveIcon(link);
+	let author = document.querySelector('.form__name').value;
+	localStorage.setItem(`icon${author}`, link);
+	document.querySelector('.btn--add-icon-link').removeEventListener('click', handleSaveLinkClick);
+	changeDisplay('.add-icon-link__wrapper');
+}
 // main functions
 
 function checkMessage() {
@@ -100,12 +127,13 @@ function checkSpam() {
 function sendMessage(message) {
 	let author = document.querySelector('.form__name').value;
 	let userIcon = getUserIconFromLS(author);
-	document.querySelector('.chat').innerHTML += `<div class="chat__msg">
-	<div class="icon-wrapper">
-		<img class="user-icon" src="${userIcon}">
-	</div>
-	<span class="author">${author}: </span>
-	<span class="comment">${message}</span>
+	document.querySelector('.chat').innerHTML += `
+	<div class="chat__msg">
+		<div class="icon-wrapper">
+			<img class="user-icon" src="${userIcon}">
+		</div>
+		<span class="author">${author}: </span>
+		<span class="comment">${message}</span>
 	</div>`;
 }
 
@@ -126,8 +154,6 @@ function setActiveIcon(icon) {
 
 function changeActiveUser(e) {
 	const name = document.querySelector('.form__name').value;
-	console.log(name);
-	// const activeUser = document.querySelector('.user-info__wrapper .author');
 	if (name !== '') {
 		document.querySelector('.user-info__wrapper span.author').innerText = name;
 		document.querySelector('.icon--active').src = e.target.src;
@@ -139,12 +165,8 @@ function changeActiveUser(e) {
 
 // helpers
 
-function addIconLink() {
-
-}
-
 function changeDisplay(selector) {
-	document.querySelector(selector).style.display = !isDisplayed(selector) ? 'flex' : 'none';
+	return document.querySelector(selector).style.display = !isDisplayed(selector) ? 'flex' : 'none';
 }
 
 function clearChat() {
@@ -168,4 +190,3 @@ function isCommentEmpty() {
 function isDisplayed(selector) {
 	return document.querySelector(selector).style.display === 'flex';
 }
-// });
