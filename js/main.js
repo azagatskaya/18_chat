@@ -1,29 +1,29 @@
 'use strict';
 
+const author = document.querySelector('.form__name');
+const authorInHeader = document.querySelector('.user-info__wrapper span.author');
+
 getNameFromLS();
 
 function getNameFromLS() {
 	let name = localStorage.getItem('name');
 	if (name) {
-		document.querySelector('.form__name').value = name;
-		document.querySelector('.user-info__wrapper span.author').innerText = name;
+		author.value = name;
+		authorInHeader.innerText = name;
 	}
 	document.querySelector('.icon--active').src = getUserIconFromLS(name);
 }
 
+
 // eventListeners
 
-document.querySelector('.user-info__wrapper span.author').addEventListener('click', handleActiveNameClick);
-inputFocusOutListener();
-
-function inputFocusOutListener() {
-	document.querySelector('.user-info__wrapper .input--author').addEventListener('focusout', handleActiveNameInput)
-};
+authorInHeader.addEventListener('click', handleActiveNameClick);
 document.querySelector('.user-info__wrapper .input--author').addEventListener('keydown', handleActiveNameEnter);
 document.querySelector('.icon--active').addEventListener('click', handleActiveIconClick);
+document.querySelector('.icon--add').addEventListener('click', handleAddIconLink);
 document.querySelector('.button--send').addEventListener('click', checkMessage);
 document.querySelector('.button--clear').addEventListener('click', clearChat);
-document.querySelector('.form__name').addEventListener('keydown', function (e) {
+author.addEventListener('keydown', function (e) {
 	if (e.keyCode === 13) {
 		e.preventDefault();
 		checkActiveUser();
@@ -36,20 +36,18 @@ document.querySelector('.form__comment').addEventListener('keydown', function (e
 	}
 });
 
-document.querySelector('.icon--add').addEventListener('click', handleAddIconLink);
+inputFocusOutListener();
+
+function inputFocusOutListener() {
+	document.querySelector('.user-info__wrapper .input--author').addEventListener('focusout', handleActiveNameInput);
+};
+
 const icons = document.querySelectorAll('.user-info__select-icon .icon-wrapper:not(:last-child)');
 for (let icon of icons) {
 	icon.addEventListener('click', handleIconClick);
 }
 
 // handlers
-
-function handleIconClick(e) {
-	let author = document.querySelector('.form__name').value;
-	localStorage.setItem(`icon${author}`, e.target.src);
-	changeDisplay('.user-info__select-icon');
-	changeActiveUser(e);
-}
 
 function handleActiveIconClick() {
 	if (changeDisplay('.user-info__select-icon') === 'flex') {
@@ -59,8 +57,11 @@ function handleActiveIconClick() {
 	}
 }
 
-function handleCloseSelectionClick() {
+function handleIconClick(e) {
+	let name = author.value;
+	localStorage.setItem(`icon${name}`, e.target.src);
 	changeDisplay('.user-info__select-icon');
+	changeActiveUser(e);
 }
 
 function handleActiveNameClick() {
@@ -78,8 +79,8 @@ function handleActiveNameEnter(e) {
 function handleActiveNameInput(e) {
 	e.preventDefault();
 	setActiveIcon(getUserIconFromLS(e.target.value));
-	document.querySelector('.form__name').value = e.target.value;
-	document.querySelector('.user-info__wrapper span.author').innerText = e.target.value;
+	author.value = e.target.value;
+	authorInHeader.innerText = e.target.value;
 	changeDisplay('.user-info__wrapper .input--author');
 }
 
@@ -92,11 +93,16 @@ function handleAddIconLink() {
 function handleSaveLinkClick() {
 	const link = document.querySelector('.input--add-icon-link').value;
 	setActiveIcon(link);
-	let author = document.querySelector('.form__name').value;
-	localStorage.setItem(`icon${author}`, link);
+	let name = author.value;
+	localStorage.setItem(`icon${name}`, link);
 	document.querySelector('.btn--add-icon-link').removeEventListener('click', handleSaveLinkClick);
 	changeDisplay('.add-icon-link__wrapper');
 }
+
+function handleCloseSelectionClick() {
+	changeDisplay('.user-info__select-icon');
+}
+
 // main functions
 
 function checkMessage() {
@@ -108,11 +114,35 @@ function checkMessage() {
 	}
 }
 
+function sendMessage(message) {
+	let name = author.value;
+	let userIcon = getUserIconFromLS(name);
+	document.querySelector('.chat').innerHTML += `
+	<div class="chat__msg">
+		<div class="icon-wrapper">
+			<img class="user-icon" src="${userIcon}">
+		</div>
+		<div class="text-wrapper" >
+			<span class="author">${name}: </span>
+			<span class="comment">${message}</span>
+		</div>
+	</div>`;
+}
+
+function checkActiveUser() {
+	const name = author.value;
+	const activeUser = authorInHeader;
+	if (activeUser.innerText !== name) {
+		activeUser.innerText = name;
+		setActiveIcon(getUserIconFromLS(name));
+	}
+}
+
 function checkNameInLS() {
-	let author = document.querySelector('.form__name').value;
+	let name = author.value;
 	let lsName = localStorage.getItem('name');
-	if ((!lsName) || (lsName !== author)) {
-		localStorage.setItem('name', author);
+	if ((!lsName) || (lsName !== name)) {
+		localStorage.setItem('name', name);
 	}
 }
 
@@ -124,30 +154,6 @@ function checkSpam() {
 	return filteredMsg;
 }
 
-function sendMessage(message) {
-	let author = document.querySelector('.form__name').value;
-	let userIcon = getUserIconFromLS(author);
-	document.querySelector('.chat').innerHTML += `
-	<div class="chat__msg">
-		<div class="icon-wrapper">
-			<img class="user-icon" src="${userIcon}">
-		</div>
-		<div class="text-wrapper" >
-			<span class="author">${author}: </span>
-			<span class="comment">${message}</span>
-		</div>
-	</div>`;
-}
-
-function checkActiveUser() {
-	const name = document.querySelector('.form__name').value;
-	const activeUser = document.querySelector('.user-info__wrapper span.author');
-	if (activeUser.innerText !== name) {
-		activeUser.innerText = name;
-		setActiveIcon(getUserIconFromLS(name));
-	}
-}
-
 function setActiveIcon(icon) {
 	if (!!icon) {
 		document.querySelector('.icon--active').src = icon;
@@ -155,14 +161,14 @@ function setActiveIcon(icon) {
 }
 
 function changeActiveUser(e) {
-	const name = document.querySelector('.form__name').value;
-	if (name !== '') {
-		document.querySelector('.user-info__wrapper span.author').innerText = name;
-		document.querySelector('.icon--active').src = e.target.src;
-	} else {
-		document.querySelector('.icon--active').src = e.target.src;
-		document.querySelector('.user-info__wrapper span.author').innerText = 'Your name';
-	}
+	const name = author.value;
+	authorInHeader.innerText = (name !== '') ? name : 'Your name';
+	document.querySelector('.icon--active').src = e.target.src;
+}
+
+function getUserIconFromLS(name) {
+	let userIcon = localStorage.getItem(`icon${name}`);
+	return userIcon ? userIcon : 'https://cdn0.iconfinder.com/data/icons/eon-social-media-contact-info-2/32/user_people_person_users_man-512.png';
 }
 
 // helpers
@@ -178,11 +184,6 @@ function clearChat() {
 
 function clearComment() {
 	document.querySelector('.form__comment').value = '';
-}
-
-function getUserIconFromLS(author) {
-	let userIcon = localStorage.getItem(`icon${author}`);
-	return userIcon ? userIcon : 'https://cdn0.iconfinder.com/data/icons/eon-social-media-contact-info-2/32/user_people_person_users_man-512.png';
 }
 
 function isCommentEmpty() {
