@@ -52,8 +52,6 @@ for (let icon of icons) {
 function handleActiveIconClick() {
 	if (changeDisplay('.user-info__select-icon') === 'flex') {
 		document.querySelector('.close-select-icon').addEventListener('click', handleCloseSelectionClick);
-	} else {
-		document.querySelector('.close-select-icon').removeEventListener('click', handleCloseSelectionClick);
 	}
 }
 
